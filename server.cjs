@@ -37,13 +37,15 @@ const slots = [
     id: 1,
     startTime: "2026-03-01T09:00",
     endTime: "2026-03-01T09:30",
-    status: "available"
+    myStatus: "available", 
+    myName: "Jen"
   },
   {
     id: 2,
     startTime: "2026-03-01T10:00",
     endTime: "2026-03-01T10:30",
-    status: "available"
+    myStatus: "available", 
+    myName: "John"
   }
 ];
 
@@ -109,6 +111,7 @@ const server = http.createServer(function (req, res) {
 
     let filePath = "./public/index.html";
 
+    if (req.url === "/index") { filePath = "./public/index.html"; }
     if (req.url === "/provider") { filePath = "./public/provider.html"; }
     if (req.url === "/client") { filePath = "./public/client.html"; }
 
@@ -127,8 +130,8 @@ const server = http.createServer(function (req, res) {
         serveHtml(res, "./public/client.html");
         return;
     }
-
-    if (path === "/") {
+    // Serve up index.html for / or /index
+    if (path === "/" || path === "/index") {
         serveHtml(res, "./public/index.html");
         return;
     }
@@ -147,13 +150,31 @@ const server = http.createServer(function (req, res) {
     }
 
 
+        // Serve stylesheet
+    if (req.url === "/style.css") {
+        fs.readFile("./public/style.css", function(err, content) {
+            if (err) {
+                res.writeHead(500);
+                res.end("File not found");
+                return;
+            }
+            res.writeHead(200, { "Content-Type": "text/css" });
+            res.end(content);
+        });
+        return;
+    }
+
+
     // valid endpoint
     if (req.method === "POST" && path === "/api/slots") {
         
         const startTime     = query.startTime;
         const endTime       = query.endTime;
-        
+        const myName        = query.myName;
+        const myStatus      = query.myStatus;
         const result        = validateSlotTimes(startTime, endTime);
+        
+        //console.log("result:", result);
         
         if (!result.ok) {
             sendJson(res, 400, { error: result.message });
@@ -170,7 +191,8 @@ const server = http.createServer(function (req, res) {
             id : nextId(),
             startTime : startTime,
             endTime : endTime,
-            status : "available"
+            myName: myName,
+            myStatus : myStatus
         };
 
         slots.push(slot);
@@ -181,7 +203,10 @@ const server = http.createServer(function (req, res) {
     }
     sendJson(res, 404, { error: "Not found" });
 
+   
+
 });
+
 
 
 

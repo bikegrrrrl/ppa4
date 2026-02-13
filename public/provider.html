@@ -4,18 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>provider page</title>
+    <link rel="stylesheet" href="style.css">
 
-    <style>
-        body { font-family: Arial, sans-serif; margin: 24px; }
-        label { display: block; margin-top: 12px; }
-        input { width: 340px; padding: 6px; }
-        button { margin-top: 12px; padding: 8px 12px; }
-        .error { color: #b00020; }
-        .ok { color: #0b6b0b; }
-        table { border-collapse: collapse; margin-top: 16px; width: 720px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #f2f2f2; }
-    </style>
+
 
 </head>
 
@@ -36,7 +27,16 @@
         <input id="startTime" type="text" placeholder="YYYY-MM-DDTHH:MM">
         <label>End time (example: 2026-03-01T09:30)</label>
         <input id="endTime" type="text" placeholder="YYYY-MM-DDTHH:MM">
+        <label for="myStatus">Select Appt Status</label>
+        <select id="myStatus" name="myStatus">
+            <option value="Available">Available</option>
+            <option value="Booked">Booked</option>
+        </select>
+        <label>Your name</label>
+        <input id="myName" type="text" placeholder="your name">
+        
         <button id="createBtn" type="submit">Create slot</button>
+        <button id="deleteBtn" type="delete">Delete slot</button>
     </form>
 
     <h2>Current slots</h2>
@@ -46,12 +46,14 @@
         <th>Start time</th>
         <th>End time</th>
         <th>Status</th>
+        <th>Name</th>
         </tr>
     </thead>
     <tbody id="slotTableBody"></tbody>
     </table>
 
     <script src="provider.js"></script>
+    
 
     <body>
 
