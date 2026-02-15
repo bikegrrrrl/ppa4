@@ -37,16 +37,44 @@ function addSlotRow(slot) {
     const td2 = document.createElement("td");
     const td3 = document.createElement("td");
     const td4 = document.createElement("td");
+    const td5 = document.createElement("td"); // new TD for buttons
+    
     
     td1.textContent = formatDateTime(slot.startTime);
     td2.textContent = formatDateTime(slot.endTime);
     td3.textContent = slot.myStatus;
     td4.textContent = slot.myName;
     
+    // delete button
+    // Create delete button
+    //const deleteBtn = document.createElement("button");
+    //deleteBtn.textContent = "Delete";
+
+    // Attach click handler
+    //deleteBtn.addEventListener("click", function () {
+    //    deleteSlot(slot.id);
+    //});
+
+    //td5.appendChild(deleteBtn);
+
+    // Create Details button
+    const detailsBtn = document.createElement("button");
+    detailsBtn.textContent = "Details";
+
+    // Attach click handler to go to a URL with the slot ID
+    detailsBtn.addEventListener("click", function () {
+        // Assuming each slot has a unique 'id' from the server
+        window.location.href = "appt?id=" + encodeURIComponent(slot.id);
+    });
+
+    td5.appendChild(detailsBtn);
+    
     tr.appendChild(td1);
     tr.appendChild(td2);
     tr.appendChild(td3);
     tr.appendChild(td4);
+    tr.appendChild(td5);
+    
     
     tbody.appendChild(tr);
     
@@ -118,6 +146,7 @@ function submitNewSlot(startTime, endTime, myName, myStatus) {
 // You could have a delete button next to every slot on the table that 
 // holds the timeslot id and use that to identify the timeslot for deletion
 //
+/*
 function deleteSlot(id) {
 
     const xhr = new XMLHttpRequest();
@@ -129,19 +158,13 @@ function deleteSlot(id) {
 
     xhr.onload = function () {
 
-        // TODO: parse JSON response safely
-        const parsed = parseJsonSafely(xhr.responseText);
-        if (!parsed.ok) {
-            setMessage("Invalid server response", "error");
-            return;
-        }
-                
-        // TODO: if status 201, addSlotRow(slot) and show a success message
-        if (xhr.status === 201) {
-            const slot = parsed.value;
-            //addSlotRow(slot);   // show in table
+        // response ok
+        if (xhr.status === 204) {
+            // const slot = parsed.value;
+            // addSlotRow(slot);   // show in table
             // TODO make a deleteRow(slot) 
-            // deleteRow(slot);
+            // slots = slots.filter(item => item.id !== id);
+
             setMessage("Slot deleted", "ok"); //success message
             // re load slots
             loadSlots();
@@ -150,20 +173,37 @@ function deleteSlot(id) {
             return;
         }
 
-        // TODO: if status 400 or 409, show the server error message
-        if (xhr.status === 400 || xhr.status === 409) {
-            const err = parsed.value;
-            setMessage(err.error, "error");
-            console.error(err.error);
-            return;
+        // parse JSON response safely
+        if (xhr.responseText) {
+            const parsed = parseJsonSafely(xhr.responseText);
+
+            if (!parsed.ok) {
+                setMessage("Invalid server response", "error");
+                return;
+            }
+
+            if (xhr.status === 200 || xhr.status === 201) {
+                setMessage("Slot deleted", "ok");
+                loadSlots();
+                return;
+            }
+
+            if (xhr.status === 400 || xhr.status === 409) {
+                const err = parsed.value;
+                setMessage(err.error, "error");
+                return;
+            }
         }
-        // TODO: otherwise, show a generic error message
+        // otherwise, show a generic error message
         console.error("Unexpected server error");
+    
+    xhr.send();
+
     };
 
-    xhr.send();
+    
 }
-
+*/
 
 // Load all slots initially
 function loadSlots() {
@@ -220,10 +260,38 @@ document.getElementById("slotForm").addEventListener("submit", function(event) {
 
 
 
+
+
+
 // Load slots when button is clicked
 document.getElementById("loadSlotsBtn").addEventListener("click", function() {
     loadSlots();
 });
+
+// Listener to modify the endTime after a startTime is selected
+// auto-adds 30 minutes to start time
+document.getElementById("startTime").addEventListener("change", function () {
+
+    const startInput = document.getElementById("startTime");
+    const endInput = document.getElementById("endTime");
+
+    if (!startInput.value) return;
+
+    const startDate = new Date(startInput.value);
+
+    // Add 30 minutes
+    startDate.setMinutes(startDate.getMinutes() + 30);
+
+    // Remove 5 hours - somehow it's in UTC time, this fixes that 
+    startDate.setHours(startDate.getHours() - 6);
+
+    // Format correctly for datetime-local
+    const formatted = startDate.toISOString().slice(0, 16);
+
+    endInput.value = formatted;
+
+});
+
 
 
 // Load slots on page load

@@ -18,14 +18,12 @@
     <button id="loadSlotsBtn">Load appointment slots</button>
   
     <ul id="slotsList"></ul>
-  
-    <script src="/provider.js"></script> 
     
     <!---form-->
     <form id="slotForm">
-        <label>Start time (example: 2026-03-01T09:00)</label>
+        <label>Start time</label>
         <input id="startTime" type="datetime-local">
-        <label>End time (example: 2026-03-01T09:30)</label>
+        <label>End time</label>
         <input id="endTime" type="datetime-local">
         <label for="myStatus">Select Appt Status</label>
         <select id="myStatus" name="myStatus" type="text">
@@ -46,6 +44,7 @@
         <th>End time</th>
         <th>Status</th>
         <th>Name</th>
+        <th>Action</th>
         </tr>
     </thead>
     <tbody id="slotTableBody"></tbody>
@@ -54,7 +53,7 @@
     <script src="provider.js"></script>
     
 
-    <body>
+</body>
 
 
 

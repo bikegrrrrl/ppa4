@@ -4,16 +4,6 @@
 // Sequential POST handling: parameters are passed in the URL query string
 
 const http = require("http");
-//const url = require("url");
-//const parsed = new URL(req.url, "http://localhost:3000");
-
-/*
-const url = require("url");
-const parsed = url.parse(req.url, true);
-/
-New way:
-const parsed = new URL(req.url, "http://localhost:3000");
-*/
 
 const fs = require("fs");
 
@@ -126,12 +116,32 @@ const server = http.createServer(function (req, res) {
     if (req.url === "/index") { filePath = "./public/index.html"; }
     if (req.url === "/provider") { filePath = "./public/provider.html"; }
     if (req.url === "/client") { filePath = "./public/client.html"; }
+    if (req.url === "/appt") { filePath = "./public/appt.html"; }
+    
 
-    if (req.method === "GET" && path === "/api/slots") {
+    /*if (req.method === "GET" && path === "/api/slots") {
     
         sendJson(res, 200, slots);
         return;
     }
+    */
+   if (req.method === "GET" && path === "/api/slots") {
+    // check if query.id is provided
+    if (query.id) {
+        const slotId = parseInt(query.id, 10);
+        const slot = slots.find(s => s.id === slotId);
+        if (!slot) {
+            sendJson(res, 404, { error: "Slot not found" });
+            return;
+        }
+        sendJson(res, 200, slot);
+        return;
+    }
+
+    // if no id, return all slots
+    sendJson(res, 200, slots);
+    return;
+}
 
     if (path === "/provider") {
         serveHtml(res, "./public/provider.html");
@@ -142,6 +152,11 @@ const server = http.createServer(function (req, res) {
         serveHtml(res, "./public/client.html");
         return;
     }
+    if (path === "/appt") {
+        serveHtml(res, "./public/appt.html");
+        return;
+    }
+
     // Serve up index.html for / or /index
     if (path === "/" || path === "/index") {
         serveHtml(res, "./public/index.html");
@@ -150,6 +165,19 @@ const server = http.createServer(function (req, res) {
 
     if (req.url === "/provider.js") {
         fs.readFile("./public/provider.js", function(err, content) {
+            if (err) {
+                res.writeHead(404, { "Content-Type": "text/plain" });
+                res.end("File not found");
+                return;
+            }
+            res.writeHead(200, { "Content-Type": "application/javascript" });
+            res.end(content);
+        });
+        return;
+    }
+
+        if (req.url === "/appt.js") {
+        fs.readFile("./public/appt.js", function(err, content) {
             if (err) {
                 res.writeHead(404, { "Content-Type": "text/plain" });
                 res.end("File not found");
