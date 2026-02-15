@@ -14,6 +14,21 @@ function setMessage(text, kind) {
 
 }
 
+
+function formatDateTime(isoString) {
+    const date = new Date(isoString);
+
+    return date.toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
+
+
 function addSlotRow(slot) {
 
     const tbody = document.getElementById("slotTableBody");
@@ -23,8 +38,8 @@ function addSlotRow(slot) {
     const td3 = document.createElement("td");
     const td4 = document.createElement("td");
     
-    td1.textContent = slot.startTime;
-    td2.textContent = slot.endTime;
+    td1.textContent = formatDateTime(slot.startTime);
+    td2.textContent = formatDateTime(slot.endTime);
     td3.textContent = slot.myStatus;
     td4.textContent = slot.myName;
     
@@ -36,7 +51,6 @@ function addSlotRow(slot) {
     tbody.appendChild(tr);
     
 }
-
 
 
 function parseJsonSafely(text) {
@@ -151,8 +165,7 @@ function deleteSlot(id) {
 }
 
 
-
-// Optional: load all slots initially
+// Load all slots initially
 function loadSlots() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "/api/slots");
@@ -166,6 +179,11 @@ function loadSlots() {
             }
 
             const slots = parsed.value;
+
+            // sort by start date
+            slots.sort((a, b) => {
+                return new Date(a.startTime) - new Date(b.startTime);
+            });
 
             // Clear existing table rows first
             const tbody = document.getElementById("slotTableBody");
@@ -210,3 +228,5 @@ document.getElementById("loadSlotsBtn").addEventListener("click", function() {
 
 // Load slots on page load
 document.addEventListener("DOMContentLoaded", loadSlots);
+
+// TODO re-load all slots upon adding new slot so they display in order

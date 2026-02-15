@@ -99,7 +99,20 @@ function isDuplicate(startTime, endTime) {
     return false;
 }
 
-// This should also check time overlap, I need to think that through
+// Check time overlap
+function isOverlap(reqStartTime, reqEndTime) {
+    // return true if timeslot overlaps any other timeslot
+    for (const s in slots) {
+        // Scenario: overlap where new timeslot overlaps beginning of another
+        if ((slots[s].startTime < reqEndTime) && (slots[s].endTime > reqStartTime)) {
+            console.log("Requested timeslot overlaps on existing timeslot");
+            return true;
+        }
+    }
+    // else return false, no overlap found
+    return false;
+}
+
 
 
 const server = http.createServer(function (req, res) {
@@ -194,6 +207,12 @@ const server = http.createServer(function (req, res) {
         // prevent duplicates
         if (isDuplicate(startTime, endTime)) {
             sendJson(res, 409, { error: "Duplicate slot" });
+            return;
+        }
+
+        //prevent overlap
+        if (isOverlap(startTime, endTime)) {
+            sendJson(res, 409, { error: "Your requested time slot overlaps on another"});
             return;
         }
         

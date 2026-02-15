@@ -47,6 +47,8 @@ select {
 }
 
 button {
+    color: black;
+    background-color: lightgray;
     padding: 10px 20px;
     cursor: pointer;
     border: none;
@@ -100,7 +102,7 @@ th, td {
 }
 
 th {
-    background-color: #5686af;
+    background-color: #6da0cc;
     color: black;
     font-weight: bold;
 }
