@@ -14,4 +14,10 @@
 * Modified CSS
 * Renders table of timeslots in order of start time
 * Added auto-population of endTime based on selected startTime by 30 minutes
-* Added appointment detail page and started working on carrying the appt id to that page
+* Added appointment detail page to display details for one appointment
+
+* Added utils.js to serve up modules that can be reused
+
+## To Do
+* Add delete button (that works) on appt detail page
+

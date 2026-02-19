@@ -6,12 +6,44 @@
     <title>appointment</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
+
+
+
 <body>
-   <h1>appointment details</h1> 
+
+<script type="module" src="./appt.js"></script>
+
+
+   <h1>Appointment Details</h1> 
    <div id="slotDetails">Loading...</div>
+   <div>
+        <h2>Current slots</h2>
+        <table>
+            <thead>
+                <tr>
+                <th>Start time</th>
+                <th>End time</th>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            
+            <tbody id="displayRow"></tbody>
+        
+        </table>
+    </div>
+<div class="button-row">
+    <button id="deleteBtn">Delete Appt</button>
+    <button onclick="window.location.href='/provider'">
+        Back to Appointment Manager
+    </button>
+</div>
 
 
 
-       <script src="appt.js"></script>
+
+       
 </body>
 </html>

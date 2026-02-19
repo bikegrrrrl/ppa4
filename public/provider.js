@@ -30,6 +30,7 @@ function formatDateTime(isoString) {
 
 
 function addSlotRow(slot) {
+    console.log('console slot', slot)
 
     const tbody = document.getElementById("slotTableBody");
     const tr = document.createElement("tr");
@@ -232,7 +233,7 @@ function loadSlots() {
             // Add each slot to the table
             slots.forEach(addSlotRow);
 
-            setMessage("Slots loaded successfully!", "ok");
+            setMessage("Appointments loaded successfully!", "ok");
         } else {
             setMessage("Failed to load slots from server", "error");
         }

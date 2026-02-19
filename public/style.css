@@ -114,3 +114,41 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+
+.delete-btn {
+    background-color: #dc3545; /* nice red */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #b02a37;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;          /* space between buttons */
+}
+
+.back-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    background-color: #545b62;
+}
+
+
+.button-row {
+    display: flex;
+    gap: 10px;
+}

@@ -176,7 +176,7 @@ const server = http.createServer(function (req, res) {
         return;
     }
 
-        if (req.url === "/appt.js") {
+    if (req.url === "/appt.js") {
         fs.readFile("./public/appt.js", function(err, content) {
             if (err) {
                 res.writeHead(404, { "Content-Type": "text/plain" });
@@ -204,21 +204,23 @@ const server = http.createServer(function (req, res) {
         return;
     }
 
+    // Serve  utils
+    if (req.url === "/utils.js") {
+        fs.readFile("./public/utils.js", function(err, content) {
+            if (err) {
+                res.writeHead(500);
+                res.end("File not found");
+                return;
+            }
+            res.writeHead(200, { "Content-Type": "application/javascript" });
+            res.end(content);
+        });
+        return;
+    }
+
 
     // valid endpoint
     if (req.method === "POST" && path === "/api/slots") {
-        console.log('query:', query);
-        
-        /*
-        const parsedUrl = new URL(req.url, "http://localhost:3000");
-        const path = parsedUrl.pathname;
-
-        const startTime = parsedUrl.searchParams.get("startTime");
-        const endTime   = parsedUrl.searchParams.get("endTime");
-        const myName    = parsedUrl.searchParams.get("myName");
-        const myStatus  = parsedUrl.searchParams.get("myStatus");
-
-        */
 
         const startTime     = query.startTime;
         const endTime       = query.endTime;
