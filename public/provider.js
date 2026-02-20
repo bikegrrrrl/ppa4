@@ -50,7 +50,7 @@ function renderCalendar(rawSlots) {
 
     const firstDay = new Date(currentYear, currentMonth - 1, 1);
     const startWeekday = firstDay.getDay();  // 0 Sunday to 6 Saturday
-    const daysInMonth = newDate(currentYear, currentMonth, 0).getDate();
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
     for (let i = 0; i < 42; i += 1) {
         const dayNumber = i - startWeekday + 1;
@@ -83,7 +83,7 @@ function renderCalendar(rawSlots) {
                     const endClock = slot.startTime.split("T")[1];
 
                     const text = document.createElement("span");
-                    text.textContent = startClock + " to " endClock;
+                    text.textContent = startClock + " to " + endClock;
 
                     item.appendChild(text);
                     cell.appendChild(item);
