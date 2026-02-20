@@ -1,3 +1,51 @@
+/* public/style.css */
+
+#calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dayCell {
+    border: 1px soid #ccc;
+    padding: 8px;
+    min-height: 120px;
+}
+
+.dayNumber {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.slotItem {
+    border: 1px solid #ddd;
+    padding: 4px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+/* Message styles controlled by className in javadscript */
+.ok {
+    border: 1px solid #2e7d32;
+    padding: 8px;
+}
+
+.error {
+    border: 1px solid #c62828;
+    padding: 8px;
+}
+
+/* bonus example: highlight today */
+.today {
+    outline: 3px solid #1976d2;
+}
+
+
+
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 24px;
@@ -117,7 +165,7 @@ tr:hover {
 
 
 .delete-btn {
-    background-color: #dc3545; /* nice red */
+    background-color: #dc3545;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -131,8 +179,7 @@ tr:hover {
 
 .button-row {
     display: flex;
-    gap: 10px;          /* space between buttons */
-}
+    gap: 10px;          
 
 .back-btn {
     background-color: #6c757d;
@@ -152,3 +199,4 @@ tr:hover {
     display: flex;
     gap: 10px;
 }
+

@@ -1,58 +1,38 @@
+<!-- public/provider.html -->
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>provider page</title>
-    <link rel="stylesheet" href="style.css">
-
-
-
+    <title>Provider Calendar</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
- <h1>Advising Appointment Manager</h1>
 
- <p id="message"></p>
-  
-    
-  
-    <ul id="slotsList"></ul>
-    
-    <!---form-->
-    <form id="slotForm">
-        <label>Start time</label>
-        <input id="startTime" type="datetime-local">
-        <label>End time</label>
-        <input id="endTime" type="datetime-local">
-        <label for="myStatus">Select Appt Status</label>
-        <select id="myStatus" name="myStatus" type="text">
-            <option value="Available">Available</option>
-            <option value="Booked">Booked</option>
-        </select>
-        <label>Your name</label>
-        <input id="myName" type="text" placeholder="your name">
-        
-        <button id="createBtn" type="submit">Create slot</button>
-    </form>
+ <h1 id="monthTitle"></h1>
 
-    <table>
-    <thead>
-        <tr>
-        <th>Start time</th>
-        <th>End time</th>
-        <th>Status</th>
-        <th>Name</th>
-        <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="slotTableBody"></tbody>
-    </table>
+ <div id="message"></div>
 
-<div class="button-row">
-    <button id="loadSlotsBtn">Reload appointment slots</button>
-</div>
+ <section id="createSlotPanel">
+    <h2>Create a slot</h2>
 
+    <label>Start time ISO
+        <input id="startTimeInput" placeholder="2026-03-01T09:00">
+    </label>
+
+    <label>End time ISO
+        <input id="endTimeInput" placeholder="2026-03-01T09:30">
+    </label>
+
+    <button id="createSlotButton">Create Slot</button>
+ </section>
+
+ <section>
+    <h2>Month view</h2>
+    <div id="calendarGrid"></div>
+ </section>
+
+    <!-- Script runs after the DOM exists -->
     <script src="provider.js"></script>
     
 
