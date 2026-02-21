@@ -1,4 +1,4 @@
-# ppa4
+# ppa5
 
 ## Improvements
 * fixed url parser issues
@@ -17,6 +17,10 @@
 * Added appointment detail page to display details for one appointment
 
 * Added utils.js to serve up modules that can be reused
+
+* Used new css and calendar display layout
+* Highlights today's date
+
 
 ## To Do
 * Add delete button (that works) on appt detail page

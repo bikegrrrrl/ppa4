@@ -3,11 +3,31 @@
 // GET and POST only
 
 
-let currentMonth = 3; // 1 to 12
-let currentYear = 2026;
+const now = new Date();
+let currentMonth = now.getMonth() + 1;
+let currentYear = now.getFullYear();
+
 
 // Run once when the page loads
 refreshCalendar();
+
+
+// Highlight today
+function highlightToday() {
+  const today = new Date();
+  
+  // Format as YYYY-MM-DD
+  const formattedToday = today.toISOString().split("T")[0];
+
+  const allDays = document.querySelectorAll(".dayCell");
+
+  allDays.forEach(day => {
+    if (day.dataset.date === formattedToday) {
+      day.classList.add("today");
+    }
+  });
+}
+
 
 
 // Show a user facing message
@@ -40,6 +60,7 @@ function refreshCalendar() {
 }
 
 
+
 // Render the month grid, then insert slot items into each day cell
 function renderCalendar(rawSlots) {
 
@@ -60,6 +81,21 @@ function renderCalendar(rawSlots) {
 
         if (dayNumber >= 1 && dayNumber <= daysInMonth) {
 
+            // Get the date into each cell to pick up and highlight today
+            if (dayNumber >= 1 && dayNumber <= daysInMonth) {
+
+                const fullDate = new Date(currentYear, currentMonth - 1, dayNumber);
+
+                const year = fullDate.getFullYear();
+                const month = String(fullDate.getMonth() + 1).padStart(2, "0");
+                const day = String(fullDate.getDate()).padStart(2, "0");
+
+                const formattedDate = `${year}-${month}-${day}`;
+
+                cell.dataset.date = formattedDate;
+            };
+
+
             //Day label at the top of the cell
             const label = document.createElement("div");
             label.className = "dayNumber";
@@ -70,17 +106,22 @@ function renderCalendar(rawSlots) {
             for (let j = 0; j < rawSlots.length; j += 1) {
                 const slot = rawSlots[j];
 
-                //Extract yyyy-mm-dd and compare the day number
+                const slotDate = new Date(slot.startTime);
+                //Extract yyyy-mm-dd and compare the day number AND THE MONTH
                 const datePart = slot.startTime.split("T")[0];
-                const slotDay = Number(datePart.split("-")[2]);
+                //const slotDay = Number(datePart.split("-")[2]);
+                const slotDay = slotDate.getDate();
+                const slotMonth = slotDate.getMonth() + 1; 
 
-                if (slotDay === dayNumber) {
+                if (slotDay === dayNumber &&
+                    slotMonth === currentMonth
+                ) {
                     const item = document.createElement("div");
                     item.className = "slotItem";
 
                     // Display just the clock times to keep it readable
                     const startClock = slot.startTime.split("T")[1];
-                    const endClock = slot.startTime.split("T")[1];
+                    const endClock = slot.endTime.split("T")[1];
 
                     const text = document.createElement("span");
                     text.textContent = startClock + " to " + endClock;
@@ -100,6 +141,21 @@ function renderCalendar(rawSlots) {
         grid.appendChild(cell);
     }
 
+   // highlight today
+    highlightToday();
+
+}
+
+
+// Before send, if inputs are empty, send message
+function auditTimeInputs(startTime, endTime) {
+    if ( startTime == undefined ) {
+        console.log('Please enter an appointment start time');
+    } else if (endTime == undefined ) {
+        console.log ("Please enter an appointment end time");
+    } else {
+        console.log('both times ok');
+    };
 }
 
 
@@ -108,13 +164,14 @@ function sendCreateSlot(startTime, endTime) {
 
     const xhr = new XMLHttpRequest();
 
-   const path =
+    const path =
         "/api/slots?startTime=" + encodeURIComponent(startTime) +
         "&endTime=" + encodeURIComponent(endTime);
 
     xhr.open("POST", path);
 
     xhr.onload = function () {
+
 
         if (xhr.status === 201) {
 
@@ -158,6 +215,25 @@ document.getElementById("createSlotButton").addEventListener("click", function (
 
 });
 
+
+// Highlight today
+// document.addEventListener("DOMContentLoaded", highlightToday);
+
+
+
+
+
+
+/*
+
+function collectFormData() {
+    return {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value
+    };
+}
+
+*/
 
 
 

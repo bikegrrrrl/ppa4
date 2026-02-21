@@ -25,15 +25,15 @@ function serveHtml(res, filePath) {
 const slots = [
   {
     id: 1,
-    startTime: "2026-03-01T09:00",
-    endTime: "2026-03-01T09:30",
+    startTime: "2026-02-01T09:00",
+    endTime: "2026-02-01T09:30",
     myStatus: "Available", 
     myName: "Jen"
   },
   {
     id: 2,
-    startTime: "2026-03-01T10:00",
-    endTime: "2026-03-01T10:30",
+    startTime: "2026-02-01T10:00",
+    endTime: "2026-02-01T10:30",
     myStatus: "Available", 
     myName: "John"
   }
@@ -48,6 +48,21 @@ function sendJson(res, statusCode, payload) {
 }
 
 
+
+/*
+
+function collectFormData() {
+    return {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value
+    };
+}
+
+*/
+
+
+/* what i don't like about this is that if you start deleting timeslots, there's
+a chance the id numbers get corrupted */
 function nextId() {
 
     return slots.length + 1;
@@ -56,7 +71,7 @@ function nextId() {
 
 
 function validateSlotTimes(startTime, endTime) {
-
+    
     if (typeof startTime !== "string" || startTime.trim().length === 0) {
         return { ok: false, message: "startTime is required" };
     }
@@ -68,6 +83,7 @@ function validateSlotTimes(startTime, endTime) {
     if (endTime < startTime) {
         return {ok: false, message: "startTime must be before endTime"}
     }
+
     // Check for duplicate - tried this here, and is added to the server, further down
     //const duplicate = isDuplicate(startTime, endTime);
     //if (duplicate === true)  {
@@ -236,7 +252,7 @@ const server = http.createServer(function (req, res) {
 
         // prevent duplicates
         if (isDuplicate(startTime, endTime)) {
-            sendJson(res, 409, { error: "Duplicate slot" });
+            sendJson(res, 409, { error: "This is a duplicate slot" });
             return;
         }
 
